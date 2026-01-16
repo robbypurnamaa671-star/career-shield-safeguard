@@ -10,7 +10,8 @@ import {
   Crown,
   Menu,
   X,
-  Info
+  Info,
+  Database
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ const navItems = [
   { path: '/skill-gap', icon: Zap, label: 'Skill Gap Checker' },
   { path: '/ai-exposure', icon: Bot, label: 'AI Exposure' },
   { path: '/career-plan', icon: Target, label: 'Career Planner' },
+  { path: '/export', icon: Database, label: 'Export Data' },
   { path: '/premium', icon: Crown, label: 'Premium' },
 ];
 

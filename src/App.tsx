@@ -9,6 +9,7 @@ import JobRiskAnalyzer from "./pages/JobRiskAnalyzer";
 import SkillGapChecker from "./pages/SkillGapChecker";
 import AIExposure from "./pages/AIExposure";
 import CareerPlanner from "./pages/CareerPlanner";
+import DataExport from "./pages/DataExport";
 import Premium from "./pages/Premium";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/skill-gap" element={<SkillGapChecker />} />
             <Route path="/ai-exposure" element={<AIExposure />} />
             <Route path="/career-plan" element={<CareerPlanner />} />
+            <Route path="/export" element={<DataExport />} />
             <Route path="/premium" element={<Premium />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
