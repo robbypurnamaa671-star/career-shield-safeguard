@@ -5,6 +5,7 @@ import { SelectField } from '@/components/AssessmentForm';
 import { RiskBadge } from '@/components/RiskBadge';
 import { ProgressRing } from '@/components/ProgressRing';
 import { InsightCard } from '@/components/InsightCard';
+import { ShareButton } from '@/components/ShareButton';
 import { 
   industries, 
   contractTypes, 
@@ -13,6 +14,7 @@ import {
   calculateJobRisk 
 } from '@/lib/assessments';
 import { saveJobRiskAssessment, type JobRiskAssessment } from '@/lib/storage';
+import { generateJobRiskShareText } from '@/lib/share';
 
 const JobRiskAnalyzer = () => {
   const [step, setStep] = useState<'form' | 'result'>('form');
@@ -169,6 +171,18 @@ const JobRiskAnalyzer = () => {
         <div className="space-y-6 animate-slide-up">
           {/* Result Card */}
           <div className="card-elevated p-6">
+            <div className="flex justify-end mb-2">
+              <ShareButton 
+                shareText={generateJobRiskShareText(
+                  result.riskLevel,
+                  result.riskScore,
+                  result.industry,
+                  result.jobRole
+                )}
+                title="My Job Risk Assessment"
+                variant="icon"
+              />
+            </div>
             <div className="text-center mb-6">
               <p className="text-sm text-muted-foreground mb-2">Your Risk Assessment</p>
               <RiskBadge level={result.riskLevel} size="lg" />
@@ -223,14 +237,27 @@ const JobRiskAnalyzer = () => {
             and individual circumstances.
           </InsightCard>
 
-          <Button 
-            onClick={handleReset}
-            variant="outline"
-            className="w-full h-12"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Start New Assessment
-          </Button>
+          <div className="flex gap-3">
+            <ShareButton 
+              shareText={generateJobRiskShareText(
+                result.riskLevel,
+                result.riskScore,
+                result.industry,
+                result.jobRole
+              )}
+              title="My Job Risk Assessment"
+              variant="full"
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleReset}
+              variant="outline"
+              className="flex-1 h-10"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              New Assessment
+            </Button>
+          </div>
         </div>
       )}
     </div>
