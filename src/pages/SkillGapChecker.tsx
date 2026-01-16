@@ -3,12 +3,14 @@ import { Zap, ArrowRight, RotateCcw, CheckCircle, XCircle, RefreshCw } from 'luc
 import { Button } from '@/components/ui/button';
 import { CheckboxGroup } from '@/components/AssessmentForm';
 import { InsightCard } from '@/components/InsightCard';
+import { ShareButton } from '@/components/ShareButton';
 import { 
   currentSkillCategories, 
   futureRelevantSkills,
   humanCentricSkills 
 } from '@/lib/assessments';
 import { saveSkillGapAssessment, type SkillGapAssessment } from '@/lib/storage';
+import { generateSkillGapShareText } from '@/lib/share';
 
 const SkillGapChecker = () => {
   const [step, setStep] = useState<'skills' | 'target' | 'result'>('skills');
@@ -194,9 +196,21 @@ const SkillGapChecker = () => {
         <div className="space-y-6 animate-slide-up">
           {/* Summary Card */}
           <div className="card-elevated p-6">
-            <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-              Your Skill Analysis
-            </h3>
+            <div className="flex items-start justify-between mb-4">
+              <h3 className="font-display font-semibold text-lg text-foreground">
+                Your Skill Analysis
+              </h3>
+              <ShareButton 
+                shareText={generateSkillGapShareText(
+                  result.currentSkills.length,
+                  result.gaps.length,
+                  result.transferableSkills.length,
+                  result.desiredRole
+                )}
+                title="My Skill Gap Analysis"
+                variant="icon"
+              />
+            </div>
             {result.desiredRole && (
               <p className="text-muted-foreground mb-4">
                 Target Role: <span className="font-medium text-foreground">{result.desiredRole}</span>
@@ -271,14 +285,27 @@ const SkillGapChecker = () => {
             Consistent, focused practice leads to better skill retention.
           </InsightCard>
 
-          <Button 
-            onClick={handleReset}
-            variant="outline"
-            className="w-full h-12"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Start New Assessment
-          </Button>
+          <div className="flex gap-3">
+            <ShareButton 
+              shareText={generateSkillGapShareText(
+                result.currentSkills.length,
+                result.gaps.length,
+                result.transferableSkills.length,
+                result.desiredRole
+              )}
+              title="My Skill Gap Analysis"
+              variant="full"
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleReset}
+              variant="outline"
+              className="flex-1 h-10"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              New Assessment
+            </Button>
+          </div>
         </div>
       )}
     </div>

@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { ProgressRing } from '@/components/ProgressRing';
 import { RiskBadge } from '@/components/RiskBadge';
 import { InsightCard } from '@/components/InsightCard';
+import { ShareButton } from '@/components/ShareButton';
 import { calculateAIExposure, humanCentricSkills } from '@/lib/assessments';
 import { saveAIExposureAssessment, type AIExposureAssessment } from '@/lib/storage';
+import { generateAIExposureShareText } from '@/lib/share';
 
 const taskOptions = [
   'Data entry and processing',
@@ -150,6 +152,17 @@ const AIExposure = () => {
         <div className="space-y-6 animate-slide-up">
           {/* Result Card */}
           <div className="card-elevated p-6">
+            <div className="flex justify-end mb-2">
+              <ShareButton 
+                shareText={generateAIExposureShareText(
+                  result.exposureLevel,
+                  result.exposureScore,
+                  result.jobRole
+                )}
+                title="My AI Exposure Assessment"
+                variant="icon"
+              />
+            </div>
             <div className="text-center mb-6">
               <p className="text-sm text-muted-foreground mb-2">AI Automation Exposure</p>
               <RiskBadge level={result.exposureLevel} size="lg" />
@@ -219,14 +232,26 @@ const AIExposure = () => {
             task characteristics, not specific predictions.
           </InsightCard>
 
-          <Button 
-            onClick={handleReset}
-            variant="outline"
-            className="w-full h-12"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Analyze Different Role
-          </Button>
+          <div className="flex gap-3">
+            <ShareButton 
+              shareText={generateAIExposureShareText(
+                result.exposureLevel,
+                result.exposureScore,
+                result.jobRole
+              )}
+              title="My AI Exposure Assessment"
+              variant="full"
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleReset}
+              variant="outline"
+              className="flex-1 h-10"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Analyze Different Role
+            </Button>
+          </div>
         </div>
       )}
     </div>

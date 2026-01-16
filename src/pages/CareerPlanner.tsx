@@ -3,8 +3,10 @@ import { Target, ArrowRight, RotateCcw, Calendar, Lightbulb, CheckCircle } from 
 import { Button } from '@/components/ui/button';
 import { CheckboxGroup } from '@/components/AssessmentForm';
 import { InsightCard } from '@/components/InsightCard';
+import { ShareButton } from '@/components/ShareButton';
 import { generateCareerPlan, futureRelevantSkills } from '@/lib/assessments';
 import { saveCareerPlan, type CareerPlan } from '@/lib/storage';
+import { generateCareerPlanShareText } from '@/lib/share';
 
 const timeframes = [
   '6 months',
@@ -133,6 +135,18 @@ const CareerPlanner = () => {
         <div className="space-y-6 animate-slide-up">
           {/* Plan Summary */}
           <div className="card-elevated p-6 text-center">
+            <div className="flex justify-end -mt-2 -mr-2 mb-2">
+              <ShareButton 
+                shareText={generateCareerPlanShareText(
+                  result.skills.length,
+                  result.shortTermGoals.length,
+                  result.midTermGoals.length,
+                  result.longTermGoals.length
+                )}
+                title="My Career Survival Plan"
+                variant="icon"
+              />
+            </div>
             <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-8 h-8 text-secondary" />
             </div>
@@ -239,14 +253,27 @@ const CareerPlanner = () => {
             on many factors including market conditions, personal circumstances, and opportunities.
           </InsightCard>
 
-          <Button 
-            onClick={handleReset}
-            variant="outline"
-            className="w-full h-12"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Create New Plan
-          </Button>
+          <div className="flex gap-3">
+            <ShareButton 
+              shareText={generateCareerPlanShareText(
+                result.skills.length,
+                result.shortTermGoals.length,
+                result.midTermGoals.length,
+                result.longTermGoals.length
+              )}
+              title="My Career Survival Plan"
+              variant="full"
+              className="flex-1"
+            />
+            <Button 
+              onClick={handleReset}
+              variant="outline"
+              className="flex-1 h-10"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Create New Plan
+            </Button>
+          </div>
         </div>
       )}
     </div>
