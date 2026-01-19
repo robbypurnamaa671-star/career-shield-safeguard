@@ -11,7 +11,8 @@ import {
 } from 'lucide-react';
 import { FeatureCard } from '@/components/FeatureCard';
 import { InsightCard } from '@/components/InsightCard';
-import { getAppData, initializeProfile, type AppData } from '@/lib/storage';
+import { ProfilePhoto } from '@/components/ProfilePhoto';
+import { getAppData, initializeProfile, updateProfilePhoto, type AppData } from '@/lib/storage';
 
 const Dashboard = () => {
   const [appData, setAppData] = useState<AppData | null>(null);
@@ -34,10 +35,15 @@ const Dashboard = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-2xl gradient-hero p-6 md:p-8 text-primary-foreground">
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-primary-foreground/20 backdrop-blur flex items-center justify-center">
-              <Shield className="w-6 h-6" />
-            </div>
+          <div className="flex items-center gap-4 mb-4">
+            <ProfilePhoto
+              photoUrl={appData?.profile?.photoUrl || null}
+              onPhotoChange={(url) => {
+                updateProfilePhoto(url);
+                setAppData(getAppData());
+              }}
+              size="md"
+            />
             <div>
               <h1 className="font-display font-bold text-2xl md:text-3xl">Career Shield</h1>
               <p className="text-primary-foreground/80 text-sm">Job Security & AI Survival Planner</p>

@@ -4,6 +4,8 @@ export interface UserProfile {
   id: string;
   createdAt: string;
   isPremium: boolean;
+  photoUrl?: string;
+  name?: string;
 }
 
 export interface JobRiskAssessment {
@@ -151,6 +153,22 @@ export const upgradeToPremium = (): void => {
   const data = getAppData();
   if (data.profile) {
     data.profile.isPremium = true;
+    saveAppData(data);
+  }
+};
+
+export const updateProfilePhoto = (photoUrl: string): void => {
+  const data = getAppData();
+  if (data.profile) {
+    data.profile.photoUrl = photoUrl;
+    saveAppData(data);
+  }
+};
+
+export const updateProfileName = (name: string): void => {
+  const data = getAppData();
+  if (data.profile) {
+    data.profile.name = name;
     saveAppData(data);
   }
 };
