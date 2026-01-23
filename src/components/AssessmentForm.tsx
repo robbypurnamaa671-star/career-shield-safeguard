@@ -1,5 +1,12 @@
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface FormFieldProps {
   label: string;
@@ -41,24 +48,18 @@ export const SelectField = ({
 }: SelectFieldProps) => {
   return (
     <FormField label={label} description={description} className={className}>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={cn(
-          'w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground',
-          'focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent',
-          'transition-colors cursor-pointer'
-        )}
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-full h-12 px-4 text-base">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option} value={option} className="text-base py-3">
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </FormField>
   );
 };
