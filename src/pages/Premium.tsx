@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { Crown, Check, Lock, Sparkles, BarChart3, FileText, Users, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { InsightCard } from '@/components/InsightCard';
-import { getAppData, upgradeToPremium } from '@/lib/storage';
+import { getAppData } from '@/lib/storage';
+import { LockedFeature } from '@/components/premium/LockedFeature';
+import { AdvancedAnalytics } from '@/components/premium/AdvancedAnalytics';
+import { DetailedReports } from '@/components/premium/DetailedReports';
+import { IndustryComparisons } from '@/components/premium/IndustryComparisons';
+import { PriorityUpdates } from '@/components/premium/PriorityUpdates';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const premiumFeatures = [
   {
@@ -10,24 +16,28 @@ const premiumFeatures = [
     title: 'Advanced Analytics',
     description: 'Detailed breakdowns, historical trends, and comparative insights',
     free: false,
+    tab: 'analytics',
   },
   {
     icon: FileText,
     title: 'Detailed Reports',
     description: 'Exportable PDF reports with comprehensive analysis',
     free: false,
+    tab: 'reports',
   },
   {
     icon: Users,
     title: 'Industry Comparisons',
     description: 'Compare your profile against industry benchmarks',
     free: false,
+    tab: 'comparisons',
   },
   {
     icon: Zap,
     title: 'Priority Updates',
     description: 'Early access to new features and assessment tools',
     free: false,
+    tab: 'updates',
   },
   {
     icon: Sparkles,
@@ -46,15 +56,15 @@ const premiumFeatures = [
 const Premium = () => {
   const [appData] = useState(getAppData());
   const isPremium = appData?.profile?.isPremium ?? false;
+  const [activeTab, setActiveTab] = useState('analytics');
 
   const handleUpgrade = () => {
     // In a real app, this would integrate with a payment processor
-    // For demo purposes, we'll just show an alert
     alert('Payment integration would go here. For demo, premium can be simulated.');
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 rounded-xl gradient-premium flex items-center justify-center">
@@ -110,6 +120,58 @@ const Premium = () => {
           </InsightCard>
         </>
       )}
+
+      {/* Premium Features Tabs */}
+      <div className="space-y-4">
+        <h3 className="font-display font-semibold text-xl text-foreground">
+          Premium Features
+        </h3>
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4 h-auto">
+            <TabsTrigger value="analytics" className="flex flex-col items-center gap-1 py-3 px-2">
+              <BarChart3 className="w-4 h-4" />
+              <span className="text-xs">Analytics</span>
+            </TabsTrigger>
+            <TabsTrigger value="reports" className="flex flex-col items-center gap-1 py-3 px-2">
+              <FileText className="w-4 h-4" />
+              <span className="text-xs">Reports</span>
+            </TabsTrigger>
+            <TabsTrigger value="comparisons" className="flex flex-col items-center gap-1 py-3 px-2">
+              <Users className="w-4 h-4" />
+              <span className="text-xs">Compare</span>
+            </TabsTrigger>
+            <TabsTrigger value="updates" className="flex flex-col items-center gap-1 py-3 px-2">
+              <Zap className="w-4 h-4" />
+              <span className="text-xs">Updates</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="analytics" className="mt-4">
+            <LockedFeature title="Advanced Analytics" isLocked={!isPremium}>
+              <AdvancedAnalytics />
+            </LockedFeature>
+          </TabsContent>
+
+          <TabsContent value="reports" className="mt-4">
+            <LockedFeature title="Detailed Reports" isLocked={!isPremium}>
+              <DetailedReports />
+            </LockedFeature>
+          </TabsContent>
+
+          <TabsContent value="comparisons" className="mt-4">
+            <LockedFeature title="Industry Comparisons" isLocked={!isPremium}>
+              <IndustryComparisons />
+            </LockedFeature>
+          </TabsContent>
+
+          <TabsContent value="updates" className="mt-4">
+            <LockedFeature title="Priority Updates" isLocked={!isPremium}>
+              <PriorityUpdates />
+            </LockedFeature>
+          </TabsContent>
+        </Tabs>
+      </div>
 
       {/* Features Comparison */}
       <div className="card-elevated overflow-hidden">
